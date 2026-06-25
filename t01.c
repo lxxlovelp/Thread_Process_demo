@@ -31,3 +31,52 @@ int main() {
 	printf("parent process ready exit!\n");
 	return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//                 ┌──────────────┐
+//                 │    main()    │
+//                 └──────┬───────┘
+//                        │
+//                        ▼
+//                 fork() 创建进程
+//                        │
+//           ┌────────────┴────────────┐
+//           │                         │
+//           ▼                         ▼
+//    子进程 (pid == 0)         父进程 (pid > 0)
+//           │                         │
+//           │                         │
+//           ▼                         ▼
+//  printf("================")   printf("wait child...")
+//           │                         │
+//           ▼                         │
+//  execl("/usr/bin/ls", ...)        wait(NULL)
+//           │                         │
+//    ┌──────┴──────┐                  │
+//    │ 成功        │                   │
+//    ▼             │                 │
+// ls -l /opt 执行   │                 │
+// (替换子进程)      │                 │
+//    │             │                 │
+//    ▼             │                 ▼
+// 程序结束         │        等待子进程结束
+//                  │                 │
+//                  ▼                 ▼
+//         （execl失败才会执行）   printf("child destroyed")
+//                  │
+//                  ▼
+//         printf("parent process ready exit")
