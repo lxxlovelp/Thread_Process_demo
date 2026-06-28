@@ -75,8 +75,3 @@ int main() {
 
 	return 0;
 }
-
-// pthread_cancel（强制杀线程），可能还没 unlock
-
-// mutex 永远没人释放
-//thread 2永远卡在 pthread_mutex_lock()

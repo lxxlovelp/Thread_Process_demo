@@ -4,10 +4,10 @@
 
 // 线程的任务，一次性的任务，还是循环任务
 void task01(int x) {
-	// while (1) {
+	while (1) {
 		printf("in child thread: %zx....x = %x\n", pthread_self(), x);
 		sleep(1);
-	// }
+	}
 }
 
 int main() {
