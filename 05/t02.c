@@ -70,12 +70,17 @@ int main() {
             // =========================
             // 判断子进程是否“正常退出”
             // =========================
+
+            //
+            /*
+            非 0（true）：子进程是正常退出的（exit / return / main 返回）0（false）：子进程不是正常退出（可能被信号杀死等）
+            */
             if (WIFEXITED(state)) {
 
                 // ✅ 正常退出（exit / return）
                 // 👉 提取 exit(5) 里的 5
                 printf("child process normal exit: %d\n",
-                       WEXITSTATUS(state));
+                        (state));
 
             } else {
 
