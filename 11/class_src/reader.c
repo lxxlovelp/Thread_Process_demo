@@ -10,12 +10,13 @@
 
 // 写端，负责创建共享内存，由于共享内存是临界资源，同时使用信号灯实现互斥操作
 static int open_shm(const char *path, int n) {
+	// 生成一个唯一的key
 	key_t key = ftok(path, n);
 	if (key == -1) {
 		perror("ftok");
 		return -1;
 	}
-	
+	// 打开共享内存
 	int shm_id = shmget(key, SHMEM_SIZE, 0666);
 	if (shm_id == -1) {
 		perror("shm get");
@@ -24,8 +25,9 @@ static int open_shm(const char *path, int n) {
 	return shm_id;
 }
 
-char *msg = NULL;
+char *msg = NULL;// flag 里面是随机垃圾值它可能指向任意内存地址,不太理解
 
+// 删除共享内存
 static void del_shm(int shm_id) {
 	int ret = shmctl(shm_id, IPC_RMID, NULL);
 	if (ret == -1) {
@@ -33,6 +35,7 @@ static void del_shm(int shm_id) {
 	}
 }
 
+// 信号处理函数，捕获Ctrl+C信号，解除共享内存映射
 void exit_handler(int sig) {
 	shmdt(msg);
 }
